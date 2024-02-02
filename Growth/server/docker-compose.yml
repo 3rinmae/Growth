@@ -1,0 +1,9 @@
+version: '3'
+services:
+  app:
+    image: 3rinmaes/growth:latest
+    restart: unless-stopped
+    env_file:
+      - growth-env
+    ports:
+      - "7045:80"
