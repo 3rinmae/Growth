@@ -15,6 +15,8 @@ CREATE TABLE IF NOT EXISTS tasks (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, name VARCHAR(500) NOT NULL, weight TINYINT NOT NULL, isCompleted BOOLEAN NOT NULL DEFAULT false, assignedTo VARCHAR(255), projectId INT NOT NULL, creatorId VARCHAR(255) NOT NULL, sprintId INT NOT NULL, Foreign Key (assignedTo) REFERENCES accounts (name), Foreign Key (projectId) REFERENCES projects (id) ON DELETE CASCADE, Foreign Key (creatorId) REFERENCES accounts (id) ON DELETE CASCADE, Foreign Key (sprintId) REFERENCES sprints (id) ON DELETE CASCADE
 ) default charset utf8 COMMENT '';
 
+-- TODO Need to see how to add completedOn triggered by isCompleted boolean yes
+
 CREATE TABLE IF NOT EXISTS notes (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, body VARCHAR(1500) NOT NULL, taskId INT NOT NULL, projectId INT NOT NULL, creatorId VARCHAR(255) NOT NULL, Foreign Key (taskId) REFERENCES tasks (id) ON DELETE CASCADE, Foreign Key (projectId) REFERENCES projects (id) ON DELETE CASCADE, Foreign Key (creatorId) REFERENCES accounts (id) ON DELETE CASCADE
 ) default charset utf8 COMMENT '';
