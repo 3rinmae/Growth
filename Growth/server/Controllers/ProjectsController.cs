@@ -14,4 +14,21 @@ public class ProjectsController : ControllerBase
     _projectsService = projectsService;
   }
 
+  [Authorize]
+  [HttpPost]
+  public async Task<ActionResult<Project>> CreateProject([FromBody] Project projectData)
+  {
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      projectData.CreatorId = userInfo.Id;
+      Project project = _projectsService.CreateProject(projectData);
+      return Ok(project);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
+
 }
