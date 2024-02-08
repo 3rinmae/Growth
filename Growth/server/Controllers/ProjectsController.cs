@@ -46,4 +46,20 @@ public class ProjectsController : ControllerBase
       return BadRequest(exception.Message);
     }
   }
+
+  [Authorize]
+  [HttpGet("{projectId}")]
+  public async Task<ActionResult<Project>> GetProjectById(int projectId)
+  {
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      Project project = _projectsService.GetProjectById(projectId, userInfo?.Id);
+      return Ok(project);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
 }

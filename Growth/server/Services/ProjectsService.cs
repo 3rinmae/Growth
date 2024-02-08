@@ -1,5 +1,6 @@
 
 
+
 namespace Growth.Services;
 
 public class ProjectsService
@@ -21,5 +22,15 @@ public class ProjectsService
   {
     List<Project> projects = _repository.GetMyProjects(userId);
     return projects;
+  }
+
+  internal Project GetProjectById(int projectId, string userId)
+  {
+    Project project = _repository.GetProjectById(projectId, userId);
+    if (project == null)
+    {
+      throw new Exception($"Invalid Id: {projectId}");
+    }
+    return project;
   }
 }

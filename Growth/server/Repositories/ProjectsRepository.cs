@@ -1,5 +1,6 @@
 
 
+
 namespace Growth.Repositories;
 
 public class ProjectsRepository
@@ -43,6 +44,19 @@ public class ProjectsRepository
       return projects;
     }, new { userId }).ToList();
     return projects;
+  }
+
+  internal Project GetProjectById(int projectId, string userId)
+  {
+    string sql = @"
+      SELECT
+      pro.*,
+      acc.*
+      FROM projects pro
+      JOIN accounts acc ON acc.id = pro.creatorId
+      WHERE pro.id = @projectId;";
+    Project project = _db.Query<Project, Account, Project>(sql, ProjectBuilder, new { projectId }).FirstOrDefault();
+    return project;
   }
 
   private Project ProjectBuilder(Project project, Account account)
