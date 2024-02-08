@@ -31,4 +31,19 @@ public class ProjectsController : ControllerBase
     }
   }
 
+  [Authorize]
+  [HttpGet]
+  public async Task<ActionResult<List<Project>>> GetMyProjects()
+  {
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      List<Project> projects = _projectsService.GetMyProjects(userInfo?.Id);
+      return Ok(projects);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
 }

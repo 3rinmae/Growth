@@ -1,4 +1,5 @@
 
+
 namespace Growth.Services;
 
 public class ProjectsService
@@ -14,5 +15,11 @@ public class ProjectsService
   {
     Project project = _repository.CreateProject(projectData);
     return project;
+  }
+
+  internal List<Project> GetMyProjects(string userId)
+  {
+    List<Project> projects = _repository.GetMyProjects(userId);
+    return projects;
   }
 }
