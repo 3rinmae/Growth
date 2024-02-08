@@ -18,6 +18,17 @@ public class ProjectsService
     return project;
   }
 
+  internal string DestroyProject(int projectId, string userId)
+  {
+    Project project = GetProjectById(projectId, userId);
+    if (project.CreatorId != userId)
+    {
+      throw new Exception("Thisis not your Project to delete");
+    }
+    _repository.DestroyProject(projectId);
+    return $"{project.Name} has been deleted!";
+  }
+
   internal List<Project> GetMyProjects(string userId)
   {
     List<Project> projects = _repository.GetMyProjects(userId);

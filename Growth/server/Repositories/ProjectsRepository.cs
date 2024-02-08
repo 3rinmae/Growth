@@ -1,6 +1,7 @@
 
 
 
+
 namespace Growth.Repositories;
 
 public class ProjectsRepository
@@ -27,6 +28,12 @@ public class ProjectsRepository
       WHERE pro.id = LAST_INSERT_ID();";
     Project project = _db.Query<Project, Account, Project>(sql, ProjectBuilder, projectData).FirstOrDefault();
     return project;
+  }
+
+  internal void DestroyProject(int projectId)
+  {
+    string sql = "DELETE FROM projects WHERE id = @projectId LIMIT 1;";
+    _db.Execute(sql, new { projectId });
   }
 
   internal List<Project> GetMyProjects(string userId)
