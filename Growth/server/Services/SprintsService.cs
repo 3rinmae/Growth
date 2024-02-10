@@ -1,3 +1,4 @@
+
 namespace Growth.Services;
 
 public class SprintsService
@@ -7,5 +8,11 @@ public class SprintsService
   public SprintsService(SprintsRepository repository)
   {
     _repository = repository;
+  }
+
+  internal Sprint CreateSprint(Sprint sprintData)
+  {
+    Sprint sprint = _repository.CreateSprint(sprintData);
+    return sprint;
   }
 }

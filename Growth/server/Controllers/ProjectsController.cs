@@ -7,11 +7,13 @@ public class ProjectsController : ControllerBase
 {
   private readonly Auth0Provider _auth0Provider;
   private readonly ProjectsService _projectsService;
+  private readonly SprintsService _sprintsService;
 
-  public ProjectsController(Auth0Provider auth0Provider, ProjectsService projectsService)
+  public ProjectsController(Auth0Provider auth0Provider, ProjectsService projectsService, SprintsService sprintsService)
   {
     _auth0Provider = auth0Provider;
     _projectsService = projectsService;
+    _sprintsService = sprintsService;
   }
 
   [Authorize]
@@ -72,6 +74,23 @@ public class ProjectsController : ControllerBase
       Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
       string message = _projectsService.DestroyProject(projectId, userInfo.Id);
       return Ok(message);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
+
+  [Authorize]
+  [HttpPost("{projectId}/sprints")]
+  public async Task<ActionResult<Sprint>> CreateSprint([FromBody] Sprint sprintData)
+  {
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      sprintData.CreatorId = userInfo.Id;
+      Sprint sprint = _sprintsService.CreateSprint(sprintData);
+      return Ok(sprint);
     }
     catch (Exception exception)
     {
